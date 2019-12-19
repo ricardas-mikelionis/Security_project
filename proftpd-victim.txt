@@ -1,0 +1,33 @@
+echo "--Docker install start."
+
+apt-get update
+
+apt-get -y install \
+    apt-transport-https \
+    ca-certificates \
+    curl \
+    gnupg-agent \
+    software-properties-common
+
+apt-key fingerprint 0EBFCD88
+
+add-apt-repository \
+   "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
+   $(lsb_release -cs) \
+   stable"
+
+apt-get update
+
+apt-get -y --allow-unauthenticated install docker-ce docker-ce-cli containerd.io
+
+echo "--Docker install end."
+
+echo "--Victim install start."
+
+git clone https://github.com/t0kx/exploit-CVE-2015-3306
+
+cd exploit-CVE-2015-3306
+
+docker build -t vuln/cve-2015-3306 .
+
+echo "--Victim install end."
